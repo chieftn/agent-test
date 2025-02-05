@@ -1,6 +1,7 @@
 from langchain_openai import ChatOpenAI
 from browser_use import Agent, Browser
-from dotenv import load_dotenv, dotenv_values
+from dotenv import load_dotenv
+import os
 
 load_dotenv()
 
@@ -9,7 +10,8 @@ import asyncio
 llm = ChatOpenAI(model="gpt-4o")
 
 async def main():
-    sensitive_data = {'x_name': dotenv_values("USERNAME"), 'x_password': dotenv_values("PASSWORD")}
+
+    sensitive_data = {'x_name': os.getenv('SO_USERNAME'), 'x_password': os.getenv('SO_PASSWORD')}
 
     browser = Browser()
     agent = Agent(

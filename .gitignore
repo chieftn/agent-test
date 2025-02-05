@@ -2,3 +2,4 @@ venv
 .env
 playwright/.auth
 tmp
+*.gif
