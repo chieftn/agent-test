@@ -11,3 +11,16 @@ https://msazure.visualstudio.com/One/_git/Digital-Operations-Experience?path=/e2
 https://github.com/browser-use/browser-use/blob/main/examples/features/save_trace.py
 
 https://github.com/browser-use/browser-use/blob/main/examples/features/save_trace.py
+
+
+# Test Format
+1. selecting md to allow for ease of writing instructions in multiline
+1. Parsing
+    mistune -- (check on license)
+
+
+https://github.com/executablebooks/markdown-it-py?tab=readme-ov-file
+https://github.com/syntax-tree/mdast
+
+https://pypi.org/project/pypandoc/
+https://stackoverflow.com/questions/62398231/building-docs-fails-due-to-missing-pandoc

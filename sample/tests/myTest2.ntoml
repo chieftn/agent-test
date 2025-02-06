@@ -1,0 +1,19 @@
+[[describe]]
+name = "My test suite"
+
+[[describe.it]]
+name = "my first test"
+act = """
+    1. do a thing
+    2. do another thing
+    3. prompt some more
+"""
+
+[[describe.it]]
+name = "my second test"
+
+[[describe]]
+name="my second test suite"
+
+[[describe.it]]
+name='my second test suite test 1'
