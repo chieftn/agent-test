@@ -14,14 +14,20 @@ class Test:
         self.act = act
 
 class TestSeries:
-    def __init__(self, name, tests: list[Test]):
+    def __init__(self, name):
         self.name = name
-        self.tests = tests
+        self.tests = []
+
+    def add_test(self, test: Test):
+        self.tests.append(test)
 
 class TestSuite:
-    def __init__(self, name: str, test_series: list[TestSeries]):
+    def __init__(self, name: str):
         self.name = name
-        self.series = test_series
+        self.series = []
+
+    def add_series(self, series: TestSeries):
+        self.series.append(series)
 
 
 def get_test_suites(directory: str):
@@ -32,31 +38,32 @@ def get_test_suites(directory: str):
     return list(map(get_test_suite, path_list))
 
 def get_test_suite(path: Path):
+    test_suite = TestSuite(path.name)
+
     with open(path, 'r') as f:
         config = toml.load(f)
 
-    test_series = [TestSeries]
     for index in range(len(config['describe'])):
         series_content = config['describe'][index]
-
         series_name = series_content['name']
-        test_list = [Test]
+
+        test_series = TestSeries(series_name)
 
         for index in range(len(series_content['it'])):
             test_content = series_content['it'][index]
 
             test_name = test_content['name']
             test_act = test_content['act']
+            test = Test(test_name, test_act)
+            test_series.add_test(test)
 
-            test_list.append(Test(test_name, test_act))
 
-        test_series.append(TestSeries(series_name, test_list))
+        test_suite.add_series(test_series)
 
-    return TestSuite(path.name, test_series)
+    return test_suite
 
 async def run_test_suite(test_suite: TestSuite):
     for test_series in test_suite.series:
-        print(dir(test_series))
         await run_test_series(test_series)
 
 async def run_test_series(test_series: TestSeries):
@@ -65,9 +72,8 @@ async def run_test_series(test_series: TestSeries):
     async with await browser.new_context(
         config=BrowserContextConfig(trace_path='./tmp/traces/')
     ) as context:
-        print(dir(test_series))
-        # for test in test_series.tests:
-        #     await run_test(context, test)
+        for test in test_series.tests:
+            await run_test(context, test)
 
     await browser.close()
 
@@ -75,11 +81,10 @@ async def run_test(context: BrowserContext, test: Test):
     agent = Agent(
         task=test.act,
         llm=llm,
-        context=context
+        browser_context=context
     )
 
-    print(agent)
-    # await agent.run()
+    await agent.run()
 
 load_dotenv()
 azure_openai_api_key = os.environ.get('AZURE_OPENAI_KEY')

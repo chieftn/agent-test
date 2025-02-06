@@ -4,18 +4,21 @@ name = "My test suite"
 [[describe.it]]
 name = "my first test"
 act = """
-    1. do a thing
-    2. do another thing
-    3. prompt some more
+    1. go to cnn.com
+    2. click on the most prominent article
 """
 
 [[describe.it]]
 name = "my second test"
-act = 'act'
+act = """
+    1. got to apple.com
+    1. search for the newest iphone
+    1. summarize the product details
+"""
 
-[[describe]]
-name="my second test suite"
+# [[describe]]
+# name="my second test suite"
 
-[[describe.it]]
-name='my second test suite test 1'
-act = 'act'
+# [[describe.it]]
+# name='my second test suite test 1'
+# act = 'act'
