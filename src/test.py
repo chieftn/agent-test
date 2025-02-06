@@ -9,9 +9,10 @@ from browser_use.browser.context import BrowserContextConfig, BrowserContext
 from dotenv import load_dotenv
 
 class Test:
-    def __init__(self, name, act):
+    def __init__(self, name, act, expect):
         self.name = name
         self.act = act
+        self.expect = expect
 
 class TestSeries:
     def __init__(self, name):
@@ -54,7 +55,8 @@ def get_test_suite(path: Path):
 
             test_name = test_content['name']
             test_act = test_content['act']
-            test = Test(test_name, test_act)
+            test_expect = test_content['expect']
+            test = Test(test_name, test_act, test_expect)
             test_series.add_test(test)
 
 
@@ -78,13 +80,38 @@ async def run_test_series(test_series: TestSeries):
     await browser.close()
 
 async def run_test(context: BrowserContext, test: Test):
+    task = """
+        You are an E2E tester expected to perform following script and report a result.
+        {act}
+
+        # RULES
+        You report 'pass' if:
+            1. you successfully perform actions
+            1. and these criteria are met: {expect}
+        You report 'fail' with a reason if:
+            1. you cannot perform the action
+            2. an error occurs
+
+        You are helpful, harmless, and honest at all times.
+    """.format(
+        act=test.act,
+        name=test.name,
+        expect=test.expect
+    )
+
+    print(task)
+
     agent = Agent(
-        task=test.act,
+        task=task,
         llm=llm,
         browser_context=context
     )
 
-    await agent.run()
+    history = await agent.run()
+    result = history.final_result()
+
+    print("-----------------------------------------------")
+    print(result)
 
 load_dotenv()
 azure_openai_api_key = os.environ.get('AZURE_OPENAI_KEY')
