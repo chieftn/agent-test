@@ -3,3 +3,4 @@ venv
 playwright/.auth
 tmp
 *.gif
+__pycache__
