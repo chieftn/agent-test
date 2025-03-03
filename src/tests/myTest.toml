@@ -4,7 +4,7 @@ name = "My test suite"
 [[describe.it]]
 name = "my first test"
 act = """
-    1. go to edelatech.com
+    1. go to {{edelatech.com}}
     2. click next on the first article
 """
 expect="the article title to include Trump"
