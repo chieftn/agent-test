@@ -1,27 +1,11 @@
 import toml
 from pathlib import Path
 from typing import List
-import json
 
 from .test_suite import TestSuite
 from .test_series import TestSeries
 from .test import Test
 from .test_suite_parse_error import TestSuiteParseError
-from .test_suite_configuration_error import TestSuiteConfigurationError
-
-def get_test_suite_configuration(directory: str) -> dict:
-    path = Path(directory, "config.json")
-    if (not path.exists):
-        return {}
-
-    try:
-        with open(path, 'r') as f:
-            data = json.load(f)
-
-        return data
-    except Exception as e:
-        raise TestSuiteConfigurationError(path.name, e)
-
 
 def get_test_suite_paths(directory: str) -> List[Path]:
     path = Path(directory)

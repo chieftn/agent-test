@@ -3,7 +3,8 @@ import os
 from langchain_openai import AzureChatOpenAI
 from dotenv import load_dotenv
 
-from test_parser import get_test_suite_paths, get_test_suite, get_test_suite_configuration, TestSuiteParseError, TestSuiteConfigurationError
+from test_parser import get_test_suite_paths, get_test_suite, get_test_suite_configuration, TestSuiteParseError
+from test_configuration import get_test_suite_configuration, TestConfigurationError
 from test_runner import run_test_suite
 
 load_dotenv()
@@ -38,7 +39,7 @@ async def main():
             except TestSuiteParseError as e:
                 print(e)
 
-    except TestSuiteConfigurationError as e:
+    except TestConfigurationError as e:
         print(e)
 
     except Exception as e:

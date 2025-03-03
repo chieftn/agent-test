@@ -1,4 +1,4 @@
-class TestSuiteConfigurationError(Exception):
+class TestConfigurationError(Exception):
     def __init__(self, filename, error):
         self.filename = filename
         self.error = error
