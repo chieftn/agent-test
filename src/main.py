@@ -24,6 +24,8 @@ async def main():
         test_suite_paths = get_test_suite_paths(test_suite_dir)
         test_results = list()
 
+        print(test_secrets.secrets)
+        return
         llm = AzureChatOpenAI(
             model_name=azure_openai_api_model,
             openai_api_key=azure_openai_api_key,

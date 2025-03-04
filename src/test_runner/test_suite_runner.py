@@ -27,8 +27,8 @@ async def run_test_series(llm: AzureChatOpenAI, suite_name: str, test_series: Te
     async with await browser.new_context(
         config=BrowserContextConfig(
             trace_path='../tmp/traces/',
-            save_recording_path='./tmp/traces/',
-            cookies_file='./tmp/cookies.json',
+            save_recording_path='../tmp/traces/',
+            cookies_file='../tmp/cookies.json',
             disable_security=False,
         )
     ) as context:

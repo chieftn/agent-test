@@ -37,18 +37,25 @@ def get_test_secrets(directory: str) -> Secrets:
         raise TestSecretsError(path.name, e)
 
 def get_secret_value(secret_schema: SecretSchema, source_schema: SecretSourceSchema) -> str:
-    print(os.environ.get('AZURE_OPENAI_KEY'))
-    return 'hello world'
+    if (source_schema.type == 'os'):
+        return get_secret_value_os(secret_schema, source_schema)
 
-    # credential = AzureCliCredential()
-    # client = SecretClient(vault_url=kv_uri, credential=credential)
+    if (source_schema.type == 'keyVault'):
+        return get_secret_value_keyVault(secret_schema, source_schema)
 
-    # print(f'Clients established.')
-    # print(f'Getting test user secret {secretName}...')
+    return ""
 
-    # password = client.get_secret(secretName)
+def get_secret_value_keyVault(secret_schema: SecretSchema, source_schema: SecretSourceSchema) -> str:
+    kv_uri = f"https://{source_schema.key_vault_name}.vault.azure.net"
+    credential = AzureCliCredential()
+    client = SecretClient(vault_url=kv_uri, credential=credential)
 
-    # if (password):
-    #     return password.value
-    # else:
-    #     return None
+    secret = client.get_secret(secret_schema.source_key)
+
+    if (secret):
+        return secret.value
+
+    return ""
+
+def get_secret_value_os(secret_schema: SecretSchema, source_schema: SecretSourceSchema) -> str:
+    return os.environ.get(secret_schema.source_key) or ""
