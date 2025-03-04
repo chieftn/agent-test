@@ -2,7 +2,7 @@ import json
 
 from langchain_openai import AzureChatOpenAI
 from browser_use.agent.service import Agent
-from browser_use.browser.browser import Browser
+from browser_use.browser.browser import Browser, BrowserConfig
 from browser_use.browser.context import BrowserContextConfig, BrowserContext
 
 from test_parser import Test
@@ -23,14 +23,17 @@ async def run_test_suite(llm: AzureChatOpenAI, sensitive_data: dict[str], test_s
 
 async def run_test_series(llm: AzureChatOpenAI, sensitive_data: dict[str], suite_name: str, test_series: TestSeries) -> list[TestResult]:
     series_results = list()
-    browser = Browser()
+    browser = Browser(
+        config=BrowserConfig(
+            disable_security=False
+        )
+    )
 
     async with await browser.new_context(
         config=BrowserContextConfig(
             trace_path='../tmp/traces/',
             save_recording_path='../tmp/traces/',
             cookies_file='../tmp/cookies.json',
-            disable_security=False,
         )
     ) as context:
         for test in test_series.tests:
