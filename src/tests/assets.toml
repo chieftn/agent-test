@@ -1,0 +1,30 @@
+[[describe]]
+name = "AIO Assets"
+
+[[describe.it]]
+name = "create Asset"
+act = """
+    1. login https://aka.ms/doe-ppe.
+    1. Navigate to https://aka.ms/doe-ppe/sites/eab4c10d-b020-4cb2-8959-d53cf2df388d/doe-int-e2e/doe-test-site/instances/eab4c10d-b020-4cb2-8959-d53cf2df388d/doe-int-e2e/doe-int-e2e/overview
+    1. click on Assets.
+    1. click Create asset.
+    1. click select asset endpoint.
+    1. in search pane, enter 'do-not-delete'.
+    1. in grid select the radio button beside 'do-not-delete.
+    1. click select button at bottom.
+    1. enter asset name: llm-asset8.
+    1. click next.
+    1. add tag and on panel enter the following fields:  name = '1', tag name = 'tag1'.
+    1. click next.
+    1. add an event and on panel, enter the following fields: event notifier = '1', event name = not1.
+    1. click next.
+    1. create.
+    1. open notification toast pane.
+    1. wait for notification toast to say succeeded.
+"""
+expect="notification reports llm-asset8 successfully created"
+
+
+
+
+
