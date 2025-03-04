@@ -31,7 +31,11 @@ async def main():
         for test_suite_path in test_suite_paths:
             try:
                 test_suite = get_test_suite(test_suite_path, test_parameters)
-                test_suite_results = await run_test_suite(llm, test_suite)
+                test_suite_results = await run_test_suite(
+                    llm=llm,
+                    sensitive_data=test_secrets.sensitive_data,
+                    test_suite=test_suite)
+
                 test_results.append(test_suite_results)
 
             except TestSuiteParseError as e:

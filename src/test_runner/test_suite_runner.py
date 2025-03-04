@@ -10,17 +10,18 @@ from test_parser import Test, TestSeries, TestSuite
 from .test_result import TestResult
 from .test_prompt import TEST_PROMPT
 
-async def run_test_suite(llm: AzureChatOpenAI, test_suite: TestSuite) -> list[TestResult]:
+async def run_test_suite(llm: AzureChatOpenAI, sensitive_data: dict[str], test_suite: TestSuite) -> list[TestResult]:
     suite_results = list()
     for test_series in test_suite.series:
         series_results = await run_test_series(
             llm=llm,
+            sensitive_data=sensitive_data,
             suite_name=test_suite.name,
             test_series=test_series
         )
         suite_results.extend(series_results)
 
-async def run_test_series(llm: AzureChatOpenAI, suite_name: str, test_series: TestSeries) -> list[TestResult]:
+async def run_test_series(llm: AzureChatOpenAI, sensitive_data: dict[str], suite_name: str, test_series: TestSeries) -> list[TestResult]:
     series_results = list()
     browser = Browser()
 
@@ -36,8 +37,9 @@ async def run_test_series(llm: AzureChatOpenAI, suite_name: str, test_series: Te
             result = await run_test(
                 llm=llm,
                 context=context,
-                suite_name=suite_name,
+                sensitive_data=sensitive_data,
                 series_name=test_series.name,
+                suite_name=suite_name,
                 test=test
             )
             series_results.append(result)
@@ -45,14 +47,14 @@ async def run_test_series(llm: AzureChatOpenAI, suite_name: str, test_series: Te
     await browser.close()
     return series_results
 
-async def run_test(llm: AzureChatOpenAI, context: BrowserContext, suite_name: str, series_name: str, test: Test) -> TestResult:
+async def run_test(llm: AzureChatOpenAI, sensitive_data: dict[str], context: BrowserContext, suite_name: str, series_name: str, test: Test) -> TestResult:
     try:
         task = TEST_PROMPT.format(act=test.act, expect=test.expect)
         agent = Agent(
             task=task,
             llm=llm,
             browser_context=context,
-            sensitive_data={}
+            sensitive_data=sensitive_data
         )
 
         history = await agent.run()
