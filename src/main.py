@@ -1,20 +1,14 @@
 import asyncio
-import os
 from langchain_openai import AzureChatOpenAI
 from dotenv import load_dotenv
 
 from test_parser import get_test_suite_paths, get_test_suite, TestSuiteParseError
 from test_parameters import get_test_parameters, TestParametersError
 from test_secrets import get_test_secrets, TestSecretsError
+from test_settings import get_test_settings, TestSettingsError
 from test_runner import run_test_suite
 
 load_dotenv()
-
-azure_openai_api_key = os.environ.get('AZURE_OPENAI_KEY')
-azure_openai_endpoint = os.environ.get('AZURE_OPENAI_ENDPOINT')
-azure_openai_api_model = os.environ.get('AZURE_OPENAI_MODEL')
-azure_openai_api_deployment = os.environ.get('AZURE_OPENAI_DEPLOYMENT')
-azure_openai_api_version = os.environ.get('AZURE_OPENAI_VERSION')
 
 async def main():
     try:
@@ -22,16 +16,16 @@ async def main():
         test_secrets = get_test_secrets(test_suite_dir)
         test_parameters = get_test_parameters(test_suite_dir)
         test_suite_paths = get_test_suite_paths(test_suite_dir)
+        test_settings = get_test_settings(test_suite_dir, test_secrets)
         test_results = list()
 
-        print(test_secrets.secrets)
-        return
+        model_settings = test_settings.model_settings
         llm = AzureChatOpenAI(
-            model_name=azure_openai_api_model,
-            openai_api_key=azure_openai_api_key,
-            azure_endpoint=azure_openai_endpoint,
-            deployment_name=azure_openai_api_deployment,
-            api_version=azure_openai_api_version
+            model_name=model_settings.model,
+            openai_api_key=model_settings.key,
+            azure_endpoint=model_settings.endpoint,
+            deployment_name=model_settings.deployment,
+            api_version=model_settings.version
         )
 
         for test_suite_path in test_suite_paths:
@@ -43,13 +37,7 @@ async def main():
             except TestSuiteParseError as e:
                 print(e)
 
-    except TestParametersError as e:
-        print(e)
-
-    except TestSecretsError as e:
-        print(e)
-
-    except Exception as e:
+    except (TestParametersError, TestSecretsError, TestSettingsError, Exception) as e:
         print("A problem interrupted your test run:")
         print(e)
 

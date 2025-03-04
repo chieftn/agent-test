@@ -31,7 +31,7 @@ def get_test_secrets(directory: str) -> Secrets:
             source_schema = sources[secret_schema.source_name]
             secrets[key] = get_secret_value(secret_schema, source_schema)
 
-        return Secrets(secrets=secrets, sensitive_data_fields=data["sensitiveData"])
+        return Secrets(values=secrets, sensitive_data_fields=data["sensitiveData"])
 
     except Exception as e:
         raise TestSecretsError(path.name, e)
