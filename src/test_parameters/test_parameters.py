@@ -3,7 +3,7 @@ import json
 
 from .test_parameters_error import TestParametersError
 
-def get_test_configuration(directory: str) -> dict[str]:
+def get_test_parameters(directory: str) -> dict[str]:
     path = Path(directory, ".parameters.json")
 
     if (not path.exists):

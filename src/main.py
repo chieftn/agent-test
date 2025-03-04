@@ -5,6 +5,7 @@ from dotenv import load_dotenv
 
 from test_parser import get_test_suite_paths, get_test_suite, TestSuiteParseError
 from test_parameters import get_test_parameters, TestParametersError
+from test_secrets import get_test_secrets, TestSecretsError
 from test_runner import run_test_suite
 
 load_dotenv()
@@ -17,6 +18,12 @@ azure_openai_api_version = os.environ.get('AZURE_OPENAI_VERSION')
 
 async def main():
     try:
+        test_suite_dir = './tests'
+        test_secrets = get_test_secrets(test_suite_dir)
+        test_parameters = get_test_parameters(test_suite_dir)
+        test_suite_paths = get_test_suite_paths(test_suite_dir)
+        test_results = list()
+
         llm = AzureChatOpenAI(
             model_name=azure_openai_api_model,
             openai_api_key=azure_openai_api_key,
@@ -24,11 +31,6 @@ async def main():
             deployment_name=azure_openai_api_deployment,
             api_version=azure_openai_api_version
         )
-
-        test_suite_dir = './tests'
-        test_parameters = get_test_parameters(test_suite_dir)
-        test_suite_paths = get_test_suite_paths(test_suite_dir)
-        test_results = list()
 
         for test_suite_path in test_suite_paths:
             try:
@@ -39,7 +41,10 @@ async def main():
             except TestSuiteParseError as e:
                 print(e)
 
-    except TestConfigurationError as e:
+    except TestParametersError as e:
+        print(e)
+
+    except TestSecretsError as e:
         print(e)
 
     except Exception as e:

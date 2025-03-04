@@ -9,18 +9,11 @@ act = """
 """
 expect="verify copilot asks 'how can i help?'"
 
-# [[describe.it]]
-# name = "my second test"
-# act = """
-#     1. go to apple.com
-#     1. search for the newest iphone
-#     1. summarize the product details
-# """
-# expect="no errors to occur"
-
-# [[describe]]
-# name="my second test suite"
-
-# [[describe.it]]
-# name='my second test suite test 1'
-# act = 'act'
+[[describe.it]]
+name = "my second test"
+act = """
+     1. go to apple.com
+     1. search for the newest iphone
+     1. summarize the product details
+"""
+expect="no errors to occur"
