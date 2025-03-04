@@ -1,4 +1,4 @@
 {
-    "allowedDomains": ["microsoft.com"],
+    "allowedDomains": ["about:blank", "microsoft.com"],
     "testSettings": {}
 }
