@@ -1,0 +1,57 @@
+[[describe]]
+name = "AIO Assets"
+
+[[describe.it]]
+name = "view assets"
+act = """
+    1. login https://aka.ms/doe-ppe.
+    1. click 'Get started'
+    1. enter 'doe-test-site' in filter box.
+    1. click 'doe-test-site'
+    1. click 'doe-int-e2e'
+    1. click on Assets.
+"""
+expect="asset list appears"
+
+[[describe.it]]
+name = "view data flows"
+act = """
+    1. login https://aka.ms/doe-ppe.
+    1. click 'Get started'
+    1. enter 'doe-test-site' in filter box.
+    1. click 'doe-test-site'
+    1. click 'doe-int-e2e'
+    1. click on data flows
+"""
+expect = "one or more dataflows appears"
+
+# [[describe.it]]
+# name = "create Asset"
+# act = """
+#     1. login https://aka.ms/doe-ppe.
+#     1. click 'Get started'
+#     1. enter 'doe-test-site' in filter box.
+#     1. click 'doe-test-site'
+#     1. click 'doe-int-e2e'
+#     1. click on Assets.
+#     1. click Create asset.
+#     1. click select asset endpoint.
+#     1. in search pane, enter 'do-not-delete'.
+#     1. in grid select the radio button beside 'do-not-delete.
+#     1. click select button at bottom.
+#     1. enter asset name: llm-asset8.
+#     1. click next.
+#     1. add tag and on panel enter the following fields:  name = '1', tag name = 'tag1'.
+#     1. click next.
+#     1. add an event and on panel, enter the following fields: event notifier = '1', event name = not1.
+#     1. click next.
+#     1. create.
+#     1. open notification toast pane.
+#     1. wait for notification toast to say succeeded.
+# """
+# expect="notification reports llm-asset8 successfully created"
+
+
+
+
+

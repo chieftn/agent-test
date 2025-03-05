@@ -1,0 +1,19 @@
+[[describe]]
+name = "My test suite"
+
+[[describe.it]]
+name = "my first test"
+act = """
+    1. go to microsoft.com
+    2. click Copilot
+"""
+expect="verify copilot asks 'how can i help?'"
+
+[[describe.it]]
+name = "my second test"
+act = """
+     1. go to apple.com
+     1. search for the newest iphone
+     1. summarize the product details
+"""
+expect="no errors to occur"
