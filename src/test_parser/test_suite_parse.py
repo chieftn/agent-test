@@ -8,11 +8,11 @@ from .test import Test
 from .test_suite_parse_error import TestSuiteParseError
 
 
-def get_test_suite_paths(directory: str) -> List[Path]:
+def get_test_suite_paths(directory: str) -> list[Path]:
     path = Path(directory)
     file_extension = '.toml'
 
-    path_list = path.rglob(f'*{file_extension}')
+    path_list = list(path.rglob(f'*{file_extension}'))
     return path_list
 
 def get_test_suite(path: Path, parameters: dict[str]) -> TestSuite:

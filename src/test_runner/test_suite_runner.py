@@ -12,6 +12,7 @@ from .test_prompt import TEST_PROMPT
 
 async def run_test_suite(llm: AzureChatOpenAI, sensitive_data: dict[str], test_suite: TestSuite) -> list[TestResult]:
     suite_results = list()
+
     for test_series in test_suite.series:
         series_results = await run_test_series(
             llm=llm,
