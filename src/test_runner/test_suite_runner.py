@@ -22,6 +22,8 @@ async def run_test_suite(llm: AzureChatOpenAI, sensitive_data: dict[str], test_s
         )
         suite_results.extend(series_results)
 
+    return suite_results
+
 async def run_test_series(llm: AzureChatOpenAI, sensitive_data: dict[str], suite_name: str, test_series: TestSeries) -> list[TestResult]:
     series_results = list()
     browser = Browser(
@@ -64,7 +66,7 @@ async def run_test(llm: AzureChatOpenAI, sensitive_data: dict[str], context: Bro
         history = await agent.run()
         result = history.final_result()
 
-        result_parsed = json.load(result)
+        result_parsed = json.loads(result)
 
         return TestResult(
             suite_name=suite_name,
